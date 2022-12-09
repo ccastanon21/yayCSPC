@@ -1,0 +1,68 @@
+---
+title: "SK4.1 -- Final Lab Report"
+author: "Chloe Castanon"
+date: "12/09/2022"
+output: html_document
+bibliography: spotify.bib
+---
+
+# 1.Background: 
+Prior to the launch of Spotify in 2006, the primary method of music consumption was tuning into the radio or listening to pre-downloaded tracks on an MP3 player. Spotify has only existed for a relatively short period of time and has already managed to be named the words largest music streaming platform with 456 million monthly subscribers [@vonderau2019spotify]. Although Spotify has been able to completely dominate the audio streaming industry and provide consumers an alternative to pre-downloaded tracks, Spotify remains at the center of controversy. Most notable over the lack of artist compensation and royalties. Top artists like Ed Sheeran who have 77.63 million monthly listeners have recently complained about Spotify’s lack of financial transparency [@marshall2015let]. Others have argued that if anything-Spotify has aided artist success by providing a platform that is so easily accessible to consumers. What do you think? Has Spotify been short selling artist content? Or have they actually increased artist popularity, and provided smaller artist a platform to jumpstart their career?
+
+
+ # 2. Analysis: 
+
+```{r, echo=FALSE, message=FALSE, warning = FALSE, fig.cap = "Figure 1. Graph of Top 3 Spotify artists and the average consumer streams per song released in 2019"}
+library(tidyr)
+library(ggplot2)
+
+spotify <- read.csv("~/Desktop/CPSC292/data/spotify_artist_data.csv")
+
+#creates a function that removes commas and turns the previously character data set in a numerical data set
+
+clean.data <- function(x){
+spotify[,x] <<- gsub(",","",spotify[,x])
+spotify[,x] <<- as.numeric(spotify[,x])
+}
+
+#Cleans the data for columns 3,4, and 5
+
+clean.data(3)
+clean.data(4)
+clean.data(5)
+
+#Produces an empty data set with column names
+plot.data <- data.frame(rep(NA,3),rep(NA,3))
+colnames(plot.data) <-c("artist","listens.per.song")
+
+#Creates a function that places the average listens per song into the data frame
+average.listens <- function(x){
+  for(k in 1:length(x)){
+  plot.data[k,1] <<- x[k]
+    inter1 <<- spotify$Lead.Streams[spotify$Artist.Name==x[k]]
+    inter2 <<- spotify$Tracks[spotify$Artist.Name==x[k]]
+    plot.data[k,2] <<- inter1[1] / inter2[1]
+  }
+}
+
+#A vector of names used in the data frame
+names <- c("Drake","Ed Sheeran","The Weeknd")
+
+#Applies the function using the name vector
+average.listens(names)
+
+
+#plots the data frame
+ggplot(plot.data)+
+  geom_bar(aes(x=artist,y=listens.per.song,fill=artist),stat="identity")+
+  labs(x="Artist",y="Average number of Listens per Song")+
+  ggtitle("Artist vs Average Listens per Song")+
+  theme_minimal()+
+  theme(plot.title = element_text(hjust=0.5), legend.position = "none")
+
+```
+ 
+# 3. Results & Discussion:
+# 4. Conclusions: 
+# -References- 
+ 
